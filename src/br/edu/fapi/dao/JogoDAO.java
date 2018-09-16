@@ -10,10 +10,10 @@ public interface JogoDAO {
 
     int salvarResultadoJogo(Jogo jogo, int Status);
 
-    List<Jogo> listarJogo(Jogo jogo);
+    List<Jogo> listarJogo();
 
-    List<Jogo> listarJogoVitoria(Jogo jogo);
+    List<Jogo> listarJogoVitoria();
 
-    List<Jogo> listarJogoDerrota(Jogo jogo);
+    List<Jogo> listarJogoDerrota();
 
 }

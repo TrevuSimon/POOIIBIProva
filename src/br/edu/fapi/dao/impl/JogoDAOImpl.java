@@ -18,17 +18,17 @@ public class JogoDAOImpl implements JogoDAO{
     }
 
     @Override
-    public List<Jogo> listarJogo(Jogo jogo) {
+    public List<Jogo> listarJogo() {
         return null;
     }
 
     @Override
-    public List<Jogo> listarJogoVitoria(Jogo jogo) {
+    public List<Jogo> listarJogoVitoria() {
         return null;
     }
 
     @Override
-    public List<Jogo> listarJogoDerrota(Jogo jogo) {
+    public List<Jogo> listarJogoDerrota() {
         return null;
     }
 }
