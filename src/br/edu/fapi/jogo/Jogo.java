@@ -92,12 +92,14 @@ public class Jogo {
         System.out.printf("\nTentativas restante: "+vida);
     }
 
-    public void chuteLetra() {
+    public boolean chuteLetra() {
         String letraDigitada;
-        System.out.printf("\n\nDigite uma letra> ");
+        System.out.printf("\n\nDigite uma letra (0 para abandonar)> ");
         letraDigitada = scan.next();
         letraDigitada = letraDigitada.toLowerCase();
         letraDigitada = "" + letraDigitada.charAt(0);
+
+        if("0".equals(letraDigitada)) return true;// Se for vercadeiro o usuario esta desistindo
 
         // /O usuario digitara a letra
         while(palavra.verificaLetraExiste(letraDigitada.charAt(0),letras)){
@@ -107,11 +109,12 @@ public class Jogo {
 
         letras.add(letraDigitada);
         vida -= palavra.executaLetra(letraDigitada);
+        return false;
     }
 
     public void resultado(int status) {
         System.out.println("---------------------------------------------------");
-        System.out.println("Você "+((status == 1)?"perdeu":"ganhou")+" o jogo!");
+        System.out.println("Você "+((status == 1)?"perdeu":((status == 3)?"Abandonou":"ganhou"))+" o jogo!");
         System.out.println("a palavra era: "+ palavra.getPalavra());
         if(status != 1)System.out.println("Você ainda tinha "+vida+" tentativas");
         System.out.println("---------------------------------------------------\n");
