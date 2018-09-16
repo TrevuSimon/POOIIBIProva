@@ -18,7 +18,7 @@ public class Menu {
             escolha = scan.next();
 
             //se for 1 Executa o jogo
-            if (escolha.equalsIgnoreCase("1")) {
+            if ("1".equalsIgnoreCase(escolha)) {
                 ControllerJogo jogo = new ControllerJogo();
                 jogo.jogar();
             }
