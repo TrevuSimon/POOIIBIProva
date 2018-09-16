@@ -11,9 +11,11 @@ import java.util.Scanner;
 public class Jogo {
 	
 	//Atributos
-    private int IdJogo;
+    private int idJogo;
+    private String jogador;
     private Palavra palavra = new Palavra();
     private List<String> letras = new ArrayList<String>();
+    private String dificuldade;
     private int vida = 5;
     private Scanner scan = new Scanner(System.in);
     private JogoDAO jogoDAO = new JogoDAOImpl();
@@ -25,9 +27,46 @@ public class Jogo {
         letras.add(" ");
         this.palavra.setPalavra(palavra);
 
+        this.defineJogador();
+        this.defineDificuldade();
+
+
+
         //Na hora que um jogo novo começa ele cria um registro no banco de dados.
         jogoDAO.cadastrarJogo(this);
 
+    }
+
+    public void defineJogador(){
+        System.out.printf("\n\nNome do jogador! > ");
+        jogador = scan.next();
+    }
+
+    public void defineDificuldade(){
+        String escolha;
+        do {
+
+
+            System.out.printf("\n\nEscolha dificuldade 1 - facil, 2 - medio 3 - dificil > ");
+            escolha = scan.next();
+            escolha = escolha.toLowerCase();
+            escolha = "" + escolha.charAt(0);
+
+            if ("1".equals(escolha)) {
+                dificuldade = "Facil";
+                vida = 3;
+                break;
+            }else if("2".equals(escolha)){
+                dificuldade = "Medio";
+                vida = 5;
+                break;
+            }else if("3".equals(escolha)){
+                dificuldade = "Dificil";
+                vida = 7;
+                break;
+            }
+
+        }while(true);
     }
 
     public int verificaJogo() {
@@ -82,11 +121,29 @@ public class Jogo {
 
     }
 
+    //Dificuldade!
+
     public int getIdJogo() {
-        return IdJogo;
+        return idJogo;
     }
 
     public void setIdJogo(int idJogo) {
-        IdJogo = idJogo;
+        this.idJogo = idJogo;
+    }
+
+    public String getJogador() {
+        return jogador;
+    }
+
+    public void setJogador(String jogador) {
+        this.jogador = jogador;
+    }
+
+    public String getDificuldade() {
+        return dificuldade;
+    }
+
+    public void setDificuldade(String dificuldade) {
+        this.dificuldade = dificuldade;
     }
 }
