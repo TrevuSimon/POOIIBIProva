@@ -30,5 +30,6 @@ public class ControllerJogo {
         }
 
         jogo.resultado(statusJogo);
+        
     }
 }
