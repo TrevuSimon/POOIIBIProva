@@ -1,5 +1,7 @@
 package br.edu.fapi.jogo;
 
+import br.edu.fapi.dao.JogoDAO;
+import br.edu.fapi.dao.impl.JogoDAOImpl;
 import br.edu.fapi.jogo.palavra.Palavra;
 
 import java.util.ArrayList;
@@ -9,17 +11,23 @@ import java.util.Scanner;
 public class Jogo {
 	
 	//Atributos
+    private int IdJogo;
     private Palavra palavra = new Palavra();
     private List<String> letras = new ArrayList<String>();
     private int vida = 5;
     private Scanner scan = new Scanner(System.in);
-    
+    private JogoDAO jogoDAO = new JogoDAOImpl();
+
+
     //Contrutor
     public Jogo(String palavra){
         palavra = palavra.toLowerCase();
         letras.add(" ");
         this.palavra.setPalavra(palavra);
-        
+
+        //Na hora que um jogo novo começa ele cria um registro no banco de dados.
+        jogoDAO.cadastrarJogo(this);
+
     }
 
     public int verificaJogo() {
@@ -68,5 +76,17 @@ public class Jogo {
         System.out.println("a palavra era: "+ palavra.getPalavra());
         if(status != 1)System.out.println("Você ainda tinha "+vida+" tentativas");
         System.out.println("---------------------------------------------------\n");
+
+        //Atualiza o resultado do jogo no banco
+        jogoDAO.salvarResultadoJogo(this,status);
+
+    }
+
+    public int getIdJogo() {
+        return IdJogo;
+    }
+
+    public void setIdJogo(int idJogo) {
+        IdJogo = idJogo;
     }
 }
