@@ -15,12 +15,5 @@ public interface JogoDAO {
     List<Jogo> listarJogoVitoria();
 
     List<Jogo> listarJogoDerrota();
-
-	List<Jogo> listarJogo();
-
-	List<Jogo> listarJogoVitoria();
-
-	List<Jogo> listarJogoDerrota();
-
-
+    
 }

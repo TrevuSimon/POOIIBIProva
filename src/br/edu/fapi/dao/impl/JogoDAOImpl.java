@@ -50,35 +50,18 @@ public class JogoDAOImpl implements JogoDAO {
 
 			int resultado = preparedStatement.executeUpdate();
 			System.out.println("Registro inserido");
-			//// Obtém a pk gerada.
+			//// Obtï¿½m a pk gerada.
 			ResultSet res = preparedStatement.getGeneratedKeys();
 			if (res.first()) {
-				System.out.println("Código gerado: " + res.getInt(1));
+				System.out.println("Cï¿½digo gerado: " + res.getInt(1));
 			}
 			return resultado;
 		} catch (SQLException e) {
-			System.out.println("Conexão não estabelecida.");
+			System.out.println("Conexï¿½o nï¿½o estabelecida.");
 			System.out.println(e.getMessage());
 		}
 		return 0;
 
 	}
 
-	@Override
-	public List<Jogo> listarJogo(Jogo jogo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Jogo> listarJogoVitoria(Jogo jogo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Jogo> listarJogoDerrota(Jogo jogo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
