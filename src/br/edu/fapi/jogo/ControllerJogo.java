@@ -23,9 +23,13 @@ public class ControllerJogo {
 
             jogo.exibirForca();
 
-            jogo.chuteLetra();
+            if(jogo.chuteLetra()){
+                statusJogo = 3;
+                break;
+            }
         }
 
         jogo.resultado(statusJogo);
+        
     }
 }
