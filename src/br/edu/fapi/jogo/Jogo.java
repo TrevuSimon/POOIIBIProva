@@ -21,6 +21,8 @@ public class Jogo {
 	private Scanner scan = new Scanner(System.in);
 	private JogoDAO jogoDAO = new JogoDAOImpl();
 	private Date horaJogo;
+	private Date horaJogoFim;
+	private String resultado;
 
 	// Contrutor
 	public Jogo(String palavra) {
@@ -163,5 +165,23 @@ public class Jogo {
 	public String getPalavra() {
 		return this.palavra.getPalavraForca();
 	}
+
+
+	public Date getHoraJogoFim() {
+		return horaJogoFim;
+	}
+
+	public void setHoraJogoFim(Date horaJogoFim) {
+		this.horaJogoFim = horaJogoFim;
+	}
+
+	public String getResultado() {
+		return resultado;
+	}
+
+	public void setResultado(String resultado) {
+		this.resultado = resultado;
+	}
+
 
 }

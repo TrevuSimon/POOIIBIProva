@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,7 +22,30 @@ public class JogoDAOImpl implements JogoDAO {
 
 	@Override
 	public List<Jogo> listarJogo() {
-		return null;
+        List<Jogo> jogos = new ArrayList<>();
+        try (Connection connection = Connections.openConnection()) {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("select * from funcionario ", Statement.RETURN_GENERATED_KEYS);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Jogo jogo = new Jogo();
+                jogo.setIdJogo(resultSet.getInt("id"));
+                jogo.setDificuldade(resultSet.getString("dificuldade"));
+                jogo.setJogador(resultSet.getString("jogador"));
+                jogo.setHoraJogo(resultSet.getString("profissao"));
+                jogo.setHoraJogoFim(resultSet.getFloat("salario"));
+                jogos.add(jogo);
+            }
+
+            jogos.forEach(funcionario -> System.out.println(funcionario));
+
+            return jogos;
+        } catch (SQLException e) {
+            System.out.println("Conexão não estabelecida.");
+            System.out.println(e.getMessage());
+        }
+        return funcionarios;
 	}
 
 	@Override
