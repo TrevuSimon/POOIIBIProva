@@ -11,7 +11,7 @@ public class ControllerJogo {
     public void jogar() {
         //Jogador digita palavra do jogo
         System.out.printf("Digite a palavra da forca.\n>");
-        String palavraDitada = scan.next();
+        String palavraDitada = scan.nextLine();
         jogo = new Jogo(palavraDitada);
         
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
