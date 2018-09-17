@@ -38,6 +38,8 @@ public class Jogo {
 
 	}
 
+	public Jogo(){};
+
 	public void defineJogador() {
 		System.out.printf("\n\nNome do jogador! > ");
 		jogador = scan.next();

@@ -16,8 +16,25 @@ import java.util.List;
 public class JogoDAOImpl implements JogoDAO {
 
 	@Override
-	public int salvarResultadoJogo(Jogo jogo, int Status) {
-		return 0;
+	public boolean salvarResultadoJogo(Jogo jogo, int Status) {
+        try (Connection connection = Connections.openConnection()) {
+            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+
+            ResultSet resultSet = statement.executeQuery("select * from jogo where cpf = " + jogo.getIdJogo());
+            if (resultSet.first()) {
+                resultSet.updateDate("fim", (Date) jogo.getHoraJogoFim());
+                resultSet.updateString("palavra_palpite", jogo.getPalavra());
+                resultSet.updateString("resultado", jogo.getResultado());
+                resultSet.updateRow();
+                return resultSet.rowUpdated();
+            }
+            return false;
+        } catch (SQLException e) {
+            System.out.println("Conexão não estabelecida.");
+            System.out.println(e.getMessage());
+            return false;
+        }
 	}
 
 	@Override
@@ -25,7 +42,7 @@ public class JogoDAOImpl implements JogoDAO {
         List<Jogo> jogos = new ArrayList<>();
         try (Connection connection = Connections.openConnection()) {
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("select * from funcionario ", Statement.RETURN_GENERATED_KEYS);
+                    .prepareStatement("select * from jogo ", Statement.RETURN_GENERATED_KEYS);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -55,7 +72,7 @@ public class JogoDAOImpl implements JogoDAO {
         List<Jogo> jogos = new ArrayList<>();
         try (Connection connection = Connections.openConnection()) {
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("select * from funcionario resultado like 'vitoria'", Statement.RETURN_GENERATED_KEYS);
+                    .prepareStatement("select * from jogo resultado like 'vitoria'", Statement.RETURN_GENERATED_KEYS);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -85,7 +102,7 @@ public class JogoDAOImpl implements JogoDAO {
         List<Jogo> jogos = new ArrayList<>();
         try (Connection connection = Connections.openConnection()) {
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("select * from funcionario where resultado like 'derrota'", Statement.RETURN_GENERATED_KEYS);
+                    .prepareStatement("select * from jogo where resultado like 'derrota'", Statement.RETURN_GENERATED_KEYS);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -110,11 +127,12 @@ public class JogoDAOImpl implements JogoDAO {
         return jogos;
 	}
 
+	@Override
 	public int cadastrarJogo(Jogo jogo) {
 		try (Connection connection = Connections.openConnection()) {
 
 			PreparedStatement preparedStatement = connection.prepareStatement(
-					"insert into funcionario_adv(jogador, dificuldade, inicio, palavra_palpite) values (?,?,?,?)",
+					"insert into jogo(jogador, dificuldade, inicio, palavra_palpite) values (?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 
 			preparedStatement.setString(1, jogo.getJogador());
