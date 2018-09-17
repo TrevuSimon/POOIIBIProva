@@ -7,5 +7,6 @@ public class Main {
 		Menu menu = new Menu();
 		menu.wellcome();
 		menu.menu();
+		menu.report();
 	}
 }

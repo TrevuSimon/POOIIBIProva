@@ -13,13 +13,6 @@ import java.util.List;
 
 public class JogoDAOImpl implements JogoDAO {
 
-	/*
-		@Override
-		public int cadastrarJogo(Jogo jogo) {
-			return 0;
-		}
-	*/
-	
 	@Override
 	public int salvarResultadoJogo(Jogo jogo, int Status) {
 		return 0;
@@ -68,5 +61,23 @@ public class JogoDAOImpl implements JogoDAO {
 		}
 		return 0;
 
+	}
+
+	@Override
+	public List<Jogo> listarJogo(Jogo jogo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Jogo> listarJogoVitoria(Jogo jogo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Jogo> listarJogoDerrota(Jogo jogo) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
