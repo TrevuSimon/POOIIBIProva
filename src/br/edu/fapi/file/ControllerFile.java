@@ -1,5 +1,14 @@
 package br.edu.fapi.file;
 
+<<<<<<< HEAD
+
+public class ControllerFile {
+	
+	public void files_createDirectory(){
+			
+	}
+}
+=======
 import br.edu.fapi.dao.JogoDAO;
 import br.edu.fapi.dao.impl.JogoDAOImpl;
 import br.edu.fapi.jogo.Jogo;
@@ -26,3 +35,4 @@ public class ControllerFile {
         fileJogo.salvarRelatorio(listaJogo, "RelatorioDerrotas");
     }
 }
+>>>>>>> 8bc6a989d18de55caf3f3f630def06be2310a1b1

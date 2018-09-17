@@ -5,148 +5,158 @@ import br.edu.fapi.dao.impl.JogoDAOImpl;
 import br.edu.fapi.jogo.palavra.Palavra;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 public class Jogo {
-	
-	//Atributos
-    private int idJogo;
-    private String jogador;
-    private Palavra palavra = new Palavra();
-    private List<String> letras = new ArrayList<String>();
-    private String dificuldade;
-    private int vida = 5;
-    private Scanner scan = new Scanner(System.in);
-    private JogoDAO jogoDAO = new JogoDAOImpl();
 
+	// Atributos
+	private int idJogo;
+	private String jogador;
+	private Palavra palavra = new Palavra();
+	private List<String> letras = new ArrayList<String>();
+	private String dificuldade;
+	private int vida = 5;
+	private Scanner scan = new Scanner(System.in);
+	private JogoDAO jogoDAO = new JogoDAOImpl();
+	private Date horaJogo;
 
-    //Contrutor
-    public Jogo(String palavra){
-        palavra = palavra.toLowerCase();
-        letras.add(" ");
-        this.palavra.setPalavra(palavra);
+	// Contrutor
+	public Jogo(String palavra) {
+		palavra = palavra.toLowerCase();
+		letras.add(" ");
+		this.palavra.setPalavra(palavra);
 
-        this.defineJogador();
-        this.defineDificuldade();
+		this.defineJogador();
+		this.defineDificuldade();
 
+		// Na hora que um jogo novo começa ele cria um registro no banco de dados.
+		jogoDAO.cadastrarJogo(this);
 
+	}
 
-        //Na hora que um jogo novo começa ele cria um registro no banco de dados.
-        jogoDAO.cadastrarJogo(this);
+	public void defineJogador() {
+		System.out.printf("\n\nNome do jogador! > ");
+		jogador = scan.next();
+	}
 
-    }
+	public void defineDificuldade() {
+		String escolha;
+		do {
 
-    public void defineJogador(){
-        System.out.printf("\n\nNome do jogador! > ");
-        jogador = scan.next();
-    }
+			System.out.printf("\n\nEscolha dificuldade 1 - facil, 2 - medio 3 - dificil > ");
+			escolha = scan.next();
+			escolha = escolha.toLowerCase();
+			escolha = "" + escolha.charAt(0);
 
-    public void defineDificuldade(){
-        String escolha;
-        do {
+			if ("1".equals(escolha)) {
+				dificuldade = "Facil";
+				vida = 7;
+				break;
+			} else if ("2".equals(escolha)) {
+				dificuldade = "Medio";
+				vida = 5;
+				break;
+			} else if ("3".equals(escolha)) {
+				dificuldade = "Dificil";
+				vida = 3;
+				break;
+			}
 
+		} while (true);
+	}
 
-            System.out.printf("\n\nEscolha dificuldade 1 - facil, 2 - medio 3 - dificil > ");
-            escolha = scan.next();
-            escolha = escolha.toLowerCase();
-            escolha = "" + escolha.charAt(0);
+	public int verificaJogo() {
+		if (vida <= 0) {
+			return 1;// Derrota
+		} else if (palavra.completa()) {
+			return 2;// Vitoria
+		}
+		return 0;// Continua
+	}
 
-            if ("1".equals(escolha)) {
-                dificuldade = "Facil";
-                vida = 3;
-                break;
-            }else if("2".equals(escolha)){
-                dificuldade = "Medio";
-                vida = 5;
-                break;
-            }else if("3".equals(escolha)){
-                dificuldade = "Dificil";
-                vida = 7;
-                break;
-            }
+	public void exibirForca() {
+		// exibe a palavra da forca que esta sendo adivinhada
+		System.out.printf("Palavra: " + palavra.getPalavraForca() + " ");
 
-        }while(true);
-    }
+		// pra cada letra dentro da lista escreva a letra
+		System.out.printf("\nLetras informadas: ");
+		for (String letra : letras) {
+			System.out.printf(letra + " ");
+		}
 
-    public int verificaJogo() {
-        if(vida <= 0){
-            return 1;//Derrota
-        }else if(palavra.completa()){
-            return 2;//Vitoria
-        }
-        return 0;//Continua
-    }
+		// exibe quantas vidas faltam
+		System.out.printf("\nTentativas restante: " + vida);
+	}
 
-    public void exibirForca() {
-        //exibe a palavra da forca que esta sendo adivinhada
-        System.out.printf("Palavra: "+palavra.getPalavraForca()+" ");
+	public boolean chuteLetra() {
+		String letraDigitada;
+		System.out.printf("\n\nDigite uma letra (0 para abandonar)> ");
+		letraDigitada = scan.next();
+		letraDigitada = letraDigitada.toLowerCase();
+		letraDigitada = "" + letraDigitada.charAt(0);
 
-        // pra cada letra dentro da lista escreva a letra
-        System.out.printf("\nLetras informadas: ");
-        for (String letra:letras) {
-            System.out.printf(letra+" ");
-        }
+		if ("0".equals(letraDigitada))
+			return true;// Se for vercadeiro o usuario esta desistindo
 
-        //exibe quantas vidas faltam
-        System.out.printf("\nTentativas restante: "+vida);
-    }
+		// /O usuario digitara a letra
+		while (palavra.verificaLetraExiste(letraDigitada.charAt(0), letras)) {
+			System.out.printf("\nDigite uma outra letra> ");
+			letraDigitada = scan.next();
+		}
 
-    public boolean chuteLetra() {
-        String letraDigitada;
-        System.out.printf("\n\nDigite uma letra (0 para abandonar)> ");
-        letraDigitada = scan.next();
-        letraDigitada = letraDigitada.toLowerCase();
-        letraDigitada = "" + letraDigitada.charAt(0);
+		letras.add(letraDigitada);
+		vida -= palavra.executaLetra(letraDigitada);
+		return false;
+	}
 
-        if("0".equals(letraDigitada)) return true;// Se for vercadeiro o usuario esta desistindo
+	public void resultado(int status) {
+		System.out.println("---------------------------------------------------");
+		System.out
+				.println("Você " + ((status == 1) ? "perdeu" : ((status == 3) ? "Abandonou" : "ganhou")) + " o jogo!");
+		System.out.println("a palavra era: " + palavra.getPalavra());
+		if (status != 1)
+			System.out.println("Você ainda tinha " + vida + " tentativas");
+		System.out.println("---------------------------------------------------\n");
 
-        // /O usuario digitara a letra
-        while(palavra.verificaLetraExiste(letraDigitada.charAt(0),letras)){
-            System.out.printf("\nDigite uma outra letra> ");
-            letraDigitada = scan.next();
-        }
+		// Atualiza o resultado do jogo no banco
+		jogoDAO.salvarResultadoJogo(this, status);
 
-        letras.add(letraDigitada);
-        vida -= palavra.executaLetra(letraDigitada);
-        return false;
-    }
+	}
 
-    public void resultado(int status) {
-        System.out.println("---------------------------------------------------");
-        System.out.println("Você "+((status == 1)?"perdeu":((status == 3)?"Abandonou":"ganhou"))+" o jogo!");
-        System.out.println("a palavra era: "+ palavra.getPalavra());
-        if(status != 1)System.out.println("Você ainda tinha "+vida+" tentativas");
-        System.out.println("---------------------------------------------------\n");
+	// Dificuldade!
 
-        //Atualiza o resultado do jogo no banco
-        jogoDAO.salvarResultadoJogo(this,status);
+	public int getIdJogo() {
+		return idJogo;
+	}
 
-    }
+	public void setIdJogo(int idJogo) {
+		this.idJogo = idJogo;
+	}
 
-    //Dificuldade!
+	public String getJogador() {
+		return jogador;
+	}
 
-    public int getIdJogo() {
-        return idJogo;
-    }
+	public void setJogador(String jogador) {
+		this.jogador = jogador;
+	}
 
-    public void setIdJogo(int idJogo) {
-        this.idJogo = idJogo;
-    }
+	public String getDificuldade() {
+		return dificuldade;
+	}
 
-    public String getJogador() {
-        return jogador;
-    }
+	public void setDificuldade(String dificuldade) {
+		this.dificuldade = dificuldade;
+	}
 
-    public void setJogador(String jogador) {
-        this.jogador = jogador;
-    }
+	public Date getHoraJogo() {
+		return horaJogo;
+	}
 
-    public String getDificuldade() {
-        return dificuldade;
-    }
+	public void setHoraJogo(Date horaJogo) {
+		this.horaJogo = horaJogo;
+	}
 
-    public void setDificuldade(String dificuldade) {
-        this.dificuldade = dificuldade;
-    }
 }
