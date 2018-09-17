@@ -16,7 +16,7 @@ import java.util.List;
 public class JogoDAOImpl implements JogoDAO {
 
 	@Override
-	public boolean salvarResultadoJogo(Jogo jogo, int Status) {
+	public int salvarResultadoJogo(Jogo jogo, int Status) {
         try (Connection connection = Connections.openConnection()) {
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
@@ -27,13 +27,13 @@ public class JogoDAOImpl implements JogoDAO {
                 resultSet.updateString("palavra_palpite", jogo.getPalavra());
                 resultSet.updateString("resultado", jogo.getResultado());
                 resultSet.updateRow();
-                return resultSet.rowUpdated();
+                return 1;
             }
-            return false;
+            return 0;
         } catch (SQLException e) {
             System.out.println("Conexão não estabelecida.");
             System.out.println(e.getMessage());
-            return false;
+            return 0;
         }
 	}
 
