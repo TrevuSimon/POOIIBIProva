@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class Connections {
 	
-    public static String url = "jdbc:mysql://localhost:3306/jogo_forca_GA";
+    public static String url = "jdbc:mysql://localhost:3306/ForcaDB";
     public static String usuario = "root";
     public static String senha = "";
 

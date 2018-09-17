@@ -11,7 +11,7 @@ public class Menu {
 	private String escolha = "1";
 	
 
-    public void menu(){
+    public void menu() throws IOException{
         while(!"0".equalsIgnoreCase(escolha)) {
             //Essa parte aparece as parada na tela
             System.out.println("Ola tudo bem\n bem vindo ao jogo da forca!");
