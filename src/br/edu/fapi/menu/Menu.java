@@ -15,8 +15,8 @@ public class Menu {
         while(!"0".equalsIgnoreCase(escolha)) {
             //Essa parte aparece as parada na tela
             System.out.println("Ola tudo bem\n bem vindo ao jogo da forca!");
-            System.out.printf("1 - Jogar\n 2 - Gerar Relatórios \n0 - Sair");
-            
+            System.out.printf("1 - Jogar\n2 - Gerar Relatórios \n0 - Sair");
+
             //se for 1 Executa o jogo
             if ("1".equalsIgnoreCase(escolha)) {
                 ControllerJogo jogo = new ControllerJogo();

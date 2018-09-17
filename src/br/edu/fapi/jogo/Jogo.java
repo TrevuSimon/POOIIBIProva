@@ -159,4 +159,9 @@ public class Jogo {
 		this.horaJogo = horaJogo;
 	}
 
+
+	public String getPalavra() {
+		return this.palavra.getPalavraForca();
+	}
+
 }

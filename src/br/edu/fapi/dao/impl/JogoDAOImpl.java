@@ -38,15 +38,13 @@ public class JogoDAOImpl implements JogoDAO {
 		try (Connection connection = Connections.openConnection()) {
 
 			PreparedStatement preparedStatement = connection.prepareStatement(
-					"insert into funcionario_adv(jogador, dificuldade, inicio, fim, palavra_palpite, resultado) values (?,?,?,?,?,?)",
+					"insert into funcionario_adv(jogador, dificuldade, inicio, palavra_palpite) values (?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 
 			preparedStatement.setString(1, jogo.getJogador());
 			preparedStatement.setString(2, jogo.getDificuldade());
 			preparedStatement.setDate(3, (Date) jogo.getHoraJogo());
-			preparedStatement.setDate(4, (Date) jogo.getHoraJogo());
-			preparedStatement.setString(5, "teste");
-			preparedStatement.setString(6, "teste");
+			preparedStatement.setString(4, jogo.getPalavra());
 
 			int resultado = preparedStatement.executeUpdate();
 			System.out.println("Registro inserido");
