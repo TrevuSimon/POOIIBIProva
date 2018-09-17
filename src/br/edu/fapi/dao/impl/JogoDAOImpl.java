@@ -33,8 +33,10 @@ public class JogoDAOImpl implements JogoDAO {
                 jogo.setIdJogo(resultSet.getInt("id"));
                 jogo.setDificuldade(resultSet.getString("dificuldade"));
                 jogo.setJogador(resultSet.getString("jogador"));
-                jogo.setHoraJogo(resultSet.getString("profissao"));
-                jogo.setHoraJogoFim(resultSet.getFloat("salario"));
+                jogo.setHoraJogo(resultSet.getDate("inicio"));
+                jogo.setHoraJogoFim(resultSet.getDate("fim"));
+                jogo.setPalavra(resultSet.getString("palavra_palpite"));
+                jogo.setResultado(resultSet.getString("resultado"));
                 jogos.add(jogo);
             }
 
@@ -45,17 +47,67 @@ public class JogoDAOImpl implements JogoDAO {
             System.out.println("Conexão não estabelecida.");
             System.out.println(e.getMessage());
         }
-        return funcionarios;
+        return jogos;
 	}
 
 	@Override
 	public List<Jogo> listarJogoVitoria() {
-		return null;
+        List<Jogo> jogos = new ArrayList<>();
+        try (Connection connection = Connections.openConnection()) {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("select * from funcionario resultado like 'vitoria'", Statement.RETURN_GENERATED_KEYS);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Jogo jogo = new Jogo();
+                jogo.setIdJogo(resultSet.getInt("id"));
+                jogo.setDificuldade(resultSet.getString("dificuldade"));
+                jogo.setJogador(resultSet.getString("jogador"));
+                jogo.setHoraJogo(resultSet.getDate("inicio"));
+                jogo.setHoraJogoFim(resultSet.getDate("fim"));
+                jogo.setPalavra(resultSet.getString("palavra_palpite"));
+                jogo.setResultado(resultSet.getString("resultado"));
+                jogos.add(jogo);
+            }
+
+            jogos.forEach(funcionario -> System.out.println(funcionario));
+
+            return jogos;
+        } catch (SQLException e) {
+            System.out.println("Conexão não estabelecida.");
+            System.out.println(e.getMessage());
+        }
+        return jogos;
 	}
 
 	@Override
 	public List<Jogo> listarJogoDerrota() {
-		return null;
+        List<Jogo> jogos = new ArrayList<>();
+        try (Connection connection = Connections.openConnection()) {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("select * from funcionario where resultado like 'derrota'", Statement.RETURN_GENERATED_KEYS);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Jogo jogo = new Jogo();
+                jogo.setIdJogo(resultSet.getInt("id"));
+                jogo.setDificuldade(resultSet.getString("dificuldade"));
+                jogo.setJogador(resultSet.getString("jogador"));
+                jogo.setHoraJogo(resultSet.getDate("inicio"));
+                jogo.setHoraJogoFim(resultSet.getDate("fim"));
+                jogo.setPalavra(resultSet.getString("palavra_palpite"));
+                jogo.setResultado(resultSet.getString("resultado"));
+                jogos.add(jogo);
+            }
+
+            jogos.forEach(funcionario -> System.out.println(funcionario));
+
+            return jogos;
+        } catch (SQLException e) {
+            System.out.println("Conexão não estabelecida.");
+            System.out.println(e.getMessage());
+        }
+        return jogos;
 	}
 
 	public int cadastrarJogo(Jogo jogo) {

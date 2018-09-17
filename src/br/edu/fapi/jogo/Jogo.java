@@ -183,5 +183,7 @@ public class Jogo {
 		this.resultado = resultado;
 	}
 
-
+	public void setPalavra(String palavra) {
+		this.palavra.setPalavra(palavra);
+	}
 }
