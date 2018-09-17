@@ -1,8 +1,8 @@
 package br.edu.fapi.dao;
 
-import br.edu.fapi.jogo.Jogo;
+        import br.edu.fapi.jogo.Jogo;
 
-import java.util.List;
+        import java.util.List;
 
 public interface JogoDAO {
 
