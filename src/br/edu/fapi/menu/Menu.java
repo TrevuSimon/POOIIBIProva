@@ -11,10 +11,12 @@ public class Menu {
 	private String escolha = "1";
 	
 
-	public void menu() {
-		while (escolha.equalsIgnoreCase("1")) {
-			// O usuario digita a escolha
-			escolha = scan.next();
+    public void menu(){
+        while(!"0".equalsIgnoreCase(escolha)) {
+            //Essa parte aparece as parada na tela
+            System.out.println("Ola tudo bem\n bem vindo ao jogo da forca!");
+            System.out.printf("1 - Jogar\n 2 - Gerar Relatórios \n0 - Sair");
+
 
 			// se for 1 Executa o jogo
 			if ("1".equalsIgnoreCase(escolha)) {
@@ -24,15 +26,31 @@ public class Menu {
 		}
 	}
 
-	public void wellcome() {
-		System.out.println("==========================================================");
-		System.out.println("+                                                        +");
-		System.out.println("+             BEM VINDOS AO JOGO DA FORCA                +");
-		System.out.println("+                                                        +");
-		System.out.println("+ ( 1 ) Jogar                                            +");
-		System.out.println("+ ( 0 )	Sair                                             +");
-		System.out.println("==========================================================");
-	}
+            //se for 1 Executa o jogo
+            if ("1".equalsIgnoreCase(escolha)) {
+                ControllerJogo jogo = new ControllerJogo();
+                jogo.jogar();
+            }
+
+            if ("2".equalsIgnoreCase(escolha)) {
+                do{
+                   System.out.printf("1 - Gerar Relatório Geral\n2 - Gerar Relatório de Vitórias\n3 - Gerar Relatório de Derrotas");
+                    escolha = scan.next();
+                }while (!"1".equals(escolha) || !"2".equals(escolha) || !"3".equals(escolha));
+
+                ControllerFile controllerFile = new ControllerFile();
+                if("1".equals(escolha)){
+                    controllerFile.gerarRelatorio();
+                }else if("2".equals(escolha)){
+                    controllerFile.gerarRelatorioVitoria();
+                }else if("3".equals(escolha)){
+                    controllerFile.gerarRelatorioDerrotas();
+                }
+                System.out.println("Relatório gerado!");
+            }
+        }
+    }
+
 
 	public void report() {
 		System.out.println("==========================================================");
